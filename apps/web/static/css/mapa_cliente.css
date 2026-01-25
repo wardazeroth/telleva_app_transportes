@@ -1,0 +1,12 @@
+body {
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+}
+
+#mapa {
+  height: 500px;
+}
+
+.toast {
+  transition: opacity 0.3s ease;
+}
