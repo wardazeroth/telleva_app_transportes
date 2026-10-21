@@ -52,7 +52,8 @@ const MapComponent = ({
         >
             <TileLayer
                 attribution='&copy; OpenStreetMap contributors'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                maxZoom={19}
             />
             
             {/* Capas Base */}

@@ -9,9 +9,8 @@ export function getCookie(name) {
 export function crearMapaBase() {
   const mapa = L.map("mapa").setView([-39.8196, -73.2459], 15);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    attribution: "© CARTO | © OpenStreetMap contributors",
-    subdomains: "abcd",
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
     maxZoom: 19,
   }).addTo(mapa);
 
