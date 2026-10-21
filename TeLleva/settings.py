@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -161,6 +162,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR.parent / 'staticfiles'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -212,4 +215,15 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://telleva.fly.dev"
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+# Configuración necesaria para Fly.io y entornos con Proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Trusted Origins para que funcionen los formularios (Admin)
+CSRF_TRUSTED_ORIGINS = [
+    "https://telleva.fly.dev",
 ]

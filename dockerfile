@@ -1,29 +1,32 @@
-FROM python:3.12
+ARG PYTHON_VERSION=3.12-slim
 
-# Dependencias del sistema para GeoDjango
-RUN apt-get update \
-    && apt-get install -y \
-        binutils \
-        libproj-dev \
-        gdal-bin \
-        libgdal-dev \
-    && apt-get clean
+FROM python:${PYTHON_VERSION}
 
-# Configurar directorio de trabajo
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Copiar archivos de requerimientos
-COPY requirements.txt .
+# install psycopg2 dependencies.
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalar dependencias de Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN mkdir -p /code
 
-# Copiar proyecto
-COPY . .
+WORKDIR /code
 
-# Exponer puerto
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+COPY . /code
+
+# RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
 
-# Ejecutar servidor por defecto
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "TeLleva.wsgi:application", "--bind", "0.0.0.0:8000"]
